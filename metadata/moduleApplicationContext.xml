@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- Beans to add to the current Application context definition -->
+  
+<beans>
+	
+	<bean id="diabetesmanagementUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order"><value>2</value></property>
+		<property name="mappings">
+			<props>
+				<prop key="module/diabetesmanagement/admin/config.form">diabetesmanagementConfigForm</prop>
+				<prop key="module/diabetesmanagement/admin/graph.form">diabetesmanagementGraphForm</prop>
+				<prop key="module/diabetesmanagement/admin/simulation/insulinType.list">diabetesmanagementInsulinTypeList</prop>
+				<prop key="module/diabetesmanagement/admin/simulation/insulinType.form">diabetesmanagementInsulinTypeForm</prop>
+				<prop key="module/diabetesmanagement/admin/simulation/simulation.form">diabetesmanagementSimulationForm</prop>
+				<prop key="module/diabetesmanagement/patientobs/patientObs.form">diabetesmanagementPatientObsForm</prop>
+				<prop key="**/problemFormLinks.portlet">diabetesmanagementProblemFormLinks</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Controllers -->
+	<bean id="diabetesmanagementConfigForm" class="org.openmrs.module.diabetesmanagement.web.controller.ConfigFormController">
+		<property name="commandName"><value>config</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/admin/configForm</value></property>
+		<property name="successView"><value>config.form</value></property>
+	</bean>
+	<bean id="diabetesmanagementSimulationForm" class="org.openmrs.module.diabetesmanagement.web.controller.SimulationFormController">
+		<property name="sessionForm"><value>true</value></property>
+		<property name="commandName"><value>sim</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/admin/simulation/simulationForm</value></property>
+		<property name="successView"><value>simulation.form</value></property>
+	</bean>
+	<bean id="diabetesmanagementInsulinTypeList" class="org.openmrs.module.diabetesmanagement.web.controller.InsulinTypeListController">
+		<property name="commandName"><value>insulinTypeList</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/admin/simulation/insulinTypeList</value></property>
+		<property name="successView"><value>insulinType.list</value></property>
+	</bean>
+	<bean id="diabetesmanagementInsulinTypeForm" class="org.openmrs.module.diabetesmanagement.web.controller.InsulinTypeFormController">
+		<property name="commandName"><value>type</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/admin/simulation/insulinTypeForm</value></property>
+		<property name="successView"><value>insulinType.list</value></property>
+	</bean>
+	<bean id="diabetesmanagementGraphForm" class="org.openmrs.module.diabetesmanagement.web.controller.GraphFormController">
+		<property name="commandName"><value>patient</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/admin/graphForm</value></property>
+		<property name="successView"><value>graph.form</value></property>
+	</bean>
+	<bean id="diabetesmanagementPatientObsForm" class="org.openmrs.module.diabetesmanagement.web.controller.PatientObsFormController">
+		<property name="commandName"><value>obs</value></property>
+		<property name="formView"><value>/module/diabetesmanagement/patientobs/patientObsForm</value></property>
+		<property name="successView"><value>patientObs.form</value></property>
+		<property name="validator"><ref bean="obsFormValidator"/></property>
+	</bean>
+	<bean id="diabetesmanagementProblemFormLinks" class="org.openmrs.module.diabetesmanagement.web.controller.ProblemFormLinksPortletController" />
+	
+	<bean id="obsFormValidator" class="org.openmrs.validator.ObsValidator"/>
+	
+	<!-- InsulinTypeService -->
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.diabetesmanagement.service.InsulinTypeService</value>
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager"/>
+					</property>
+					<property name="target">
+						<bean class="org.openmrs.module.diabetesmanagement.impl.InsulinTypeServiceImpl">
+							<property name="insulinTypeDAO">
+								<bean class="org.openmrs.module.diabetesmanagement.db.hibernate.HibernateInsulinTypeDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory"/>
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">
+
+<module configVersion="1.0">
+	
+	<!-- Base Module Properties -->
+	<id>diabetesmanagement</id>
+	<name>Diabetes Management</name>
+	<version>0.5</version>
+	<package>org.openmrs.module.@MODULE_ID@</package>
+	<author>Department of Medical Informatics, University of Göttingen</author>
+	<description>
+		Diabetes data visualization and simulation.
+	</description>
+	<activator>@MODULE_PACKAGE@.DiabetesManagementActivator</activator>
+	<!-- /Base Module Properties -->
+
+	<require_version>1.5.0.7216</require_version>
+	<require_modules>
+		<require_module version="1.0">org.openmrs.module.medicalproblem</require_module>
+	</require_modules>
+	
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.AdminListExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.admin.problems.problemForm.afterSummary</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.ProblemFormLinksExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.patientpanel.obs</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.PatientObsGlucoseLinkExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.patientpanel.obs</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.PatientObsWeightLinkExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.patientpanel.obs</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.PatientObsSbpLinkExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.patientpanel.obs</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.PatientObsDbpLinkExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.module.medicalproblem.patientpanel.other</point>
+		<class>org.openmrs.module.diabetesmanagement.extension.html.PatientSimulationLinkExt</class>
+	</extension>
+	
+	<!-- Required Privileges -->
+	<privilege>
+		<name>Manage Insulin Types</name>
+		<description>Able to add, edit and delete insulin types</description>
+	</privilege>
+	<privilege>
+		<name>Run Diabetes Simulations</name>
+		<description>Able to run glucose-insulin metabolism simulations</description>
+	</privilege>
+	
+	<!-- Required Global Properties -->
+	<globalProperty>
+		<property>diabetesmanagement.simulation.rtgNormal</property>
+		<defaultValue>9.0</defaultValue>
+		<description>
+			Value for normal renal glucose threshold.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.rtgHigh</property>
+		<defaultValue>11.0</defaultValue>
+		<description>
+			Value for high renal glucose threshold.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.rtgLow</property>
+		<defaultValue>7.0</defaultValue>
+		<description>
+			Value for low renal glucose threshold.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.ccrNormal</property>
+		<defaultValue>100.0</defaultValue>
+		<description>
+			Value for normal creatinine clearance rate (renal function).
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.ccrReduced</property>
+		<defaultValue>40.0</defaultValue>
+		<description>
+			Value for reduced creatinine clearance rate (renal function).
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityHepaticNormal</property>
+		<defaultValue>0.5</defaultValue>
+		<description>
+			Value for normal hepatic insulin sensivity.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityHepaticIncreased</property>
+		<defaultValue>0.8</defaultValue>
+		<description>
+			Value for increased hepatic insulin sensivity.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityHepaticReduced</property>
+		<defaultValue>0.2</defaultValue>
+		<description>
+			Value for reduced hepatic insulin sensivity.
+		</description>
+		</globalProperty>
+		<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityPeripheralNormal</property>
+		<defaultValue>0.5</defaultValue>
+		<description>
+			Value for normal peripheral insulin sensivity.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityPeripheralIncreased</property>
+		<defaultValue>0.8</defaultValue>
+		<description>
+			Value for increased peripheral insulin sensivity.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>diabetesmanagement.simulation.insulinSensivityPeripheralReduced</property>
+		<defaultValue>0.2</defaultValue>
+		<description>
+			Value for reduced peripheral insulin sensivity.
+		</description>
+	</globalProperty>
+	
+	<!-- Internationalization -->
+	<!-- All message codes should start with diabetesmanagement.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>de</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+
+	<mappingFiles>
+		InsulinType.hbm.xml
+	</mappingFiles>
+	
+</module>
+
