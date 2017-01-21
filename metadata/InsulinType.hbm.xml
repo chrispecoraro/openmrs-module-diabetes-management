@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="@MODULE_PACKAGE@">
+
+	<class name="InsulinType" table="diabetesmanagement_insulin_type" batch-size="25">
+
+		<id name="insulinTypeId" type="java.lang.Integer" column="insulin_type_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		
+		<discriminator column="insulin_type_id" insert="false" />
+		
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
+		<property name="parameterS" type="java.lang.Double" column="parameter_s" not-null="true" />
+		<property name="parameterA" type="java.lang.Double" column="parameter_a" not-null="true" />
+		<property name="parameterB" type="java.lang.Double" column="parameter_b" not-null="true" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<property name="retired" type="java.lang.Boolean" column="retired" length="1" not-null="true" />
+		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String" column="retired_reason" length="255" />
+
+		<!-- Associations -->
+
+		<many-to-one name="concept" class="org.openmrs.Concept" column="concept_id" />
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+
+	</class>
+
+</hibernate-mapping>
